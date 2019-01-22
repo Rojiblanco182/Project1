@@ -1,7 +1,7 @@
 function Player(game) {
   this.game = game;
   this.x = this.game.canvas.width * 0.08;
-  this.y0 = this.game.canvas.height * 0.08;
+  this.y0 = this.game.canvas.height * 0.8;
   this.y = this.y0;
 
   this.batman = new Image();
