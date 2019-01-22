@@ -12,43 +12,58 @@ function Player(game) {
 
   this.vy = 1;
 
+  this.keys = {
+    left: false,
+    right: false
+  };
+
   this.setListeners();
 }
 
 Player.prototype.draw = function () {
   this.game.ctx.drawImage(this.batman, this.x, this.y, this.w, this.h);
+  this.move();
 }
 
 
 Player.prototype.setListeners = function () {
-  document.onkeydown = function (event) {
-    switch (event.keyCode) {
-      case 32:
-        var gravity = 0.4;
 
-        if (this.y >= this.y0) {
-          this.vy -= 10;
-          this.y -= 25;
-        }
-        else {
-          this.vy += gravity;
-          this.y += this.vy;
-        }
-        break;
+  document.onkeydown = function (e) {
 
-      case 37:
-        this.x -= 25;
-        break;
+    if (e.keyCode == 38 && this.y == this.y0) this.y -= 600;
+    if (e.keyCode == 37) this.keys.left = true;
+    if (e.keyCode == 39) this.keys.right = true;
 
-      case 39:
-        this.x += 25;
-        break;
-    }
+
+  }.bind(this);
+
+  document.onkeyup = function (e) {
+    if (e.keyCode == 37) this.keys.left = false;
+    if (e.keyCode == 39) this.keys.right = false;
   }.bind(this);
 }
 
-function jump() {
+Player.prototype.move = function () {
 
-  console.log(Player.y);
+
+  var gravity = 0.4;
+
+  if (this.y >= this.y0) {
+    this.vy = 1;
+    this.y = this.y0;
+  }
+  else {
+    this.vy += gravity;
+    this.y += this.vy;
+  }
+
+  if (this.keys.left) {
+    this.x -= 10;
+  }
+
+  if (this.keys.right) {
+    this.x += 10;
+  }
 }
+
 

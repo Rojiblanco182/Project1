@@ -8,8 +8,6 @@ function Background(game) {
   this.x = 0;
   this.y = 0;
 
-  this.dx = 10; //qué hace esto?
-
   this.game.ctx.drawImage(this.backgroundImg, this.x, this.y, this.game.canvas.width, this.game.canvas.height);
 }
 

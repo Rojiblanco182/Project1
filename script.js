@@ -8,11 +8,7 @@ var Game = {
   canvas: undefined,
   ctx: undefined,
   fps: 60,
-  // keys: {
-  //   jump: 32,
-  //   moveLeft: 37,
-  //   moveRight: 39
-  // },
+
   start: function (canvasId) {
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext("2d");
@@ -34,7 +30,7 @@ var Game = {
         this.generateObstacle();
       }
 
-      this.score += 0.01;
+      //this.score += 0.01;
       this.moveAll();
       this.drawAll();
 
@@ -47,7 +43,7 @@ var Game = {
     this.player = new Player(this);
     this.framesCounter = 0;
     this.obstacles = [];
-    this.score = 0;
+    //this.score = 0;
   },
 
   clearObstacles: function () {
