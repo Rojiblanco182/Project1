@@ -6,15 +6,21 @@ function Obstacle(game) {
 
   this.dx = 10;
 
-  this.x = this.game.canvas.width / 2;
-  this.y = 100;
+  this.x = 0;
+  this.y = 0;//100;
 }
 
 Obstacle.prototype.draw = function () {
-  this.game.ctx.fillStyle = "red";
-  this.game.ctx.fillRect(this.x, this.y, this.w, this.h);
+  this.game.ctx.fillStyle = "green";
+  this.game.ctx.fillRect(this.x, this.game.canvas.height * 0.76, 250, 25);
+  this.game.ctx.fillRect(this.game.canvas.width / 2.3, this.game.canvas.height, 250, -350);
 }
 
-Obstacle.prototype.move = function () {
-  this.x -= this.dx;
-}
+// Obstacle.prototype.draw = function () {
+//   this.game.ctx.fillStyle = "red";
+//   this.game.ctx.fillRect(this.x, this.y, this.w, this.h);
+// }
+
+// Obstacle.prototype.move = function () {
+//   this.x -= this.dx;
+// }

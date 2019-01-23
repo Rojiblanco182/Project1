@@ -21,14 +21,15 @@ var Game = {
     this.interval = setInterval(function () {
       this.clear();
       this.framesCounter++;
+      this.generateObstacle();
 
-      if (this.framesCounter > 1000) {
-        this.framesCounter = 0;
-      }
+      // if (this.framesCounter > 1000) {
+      //   this.framesCounter = 0;
+      // }
 
-      if (this.framesCounter % 50 === 0) {
-        this.generateObstacle();
-      }
+      // if (this.framesCounter % 50 === 0) {
+      //   this.generateObstacle();
+      // }
 
       //this.score += 0.01;
       this.moveAll();
@@ -72,6 +73,6 @@ var Game = {
     //this.player.move();
     this.enemy.move();
     this.player.setListeners();
-    this.obstacles.forEach(function (obstacle) { obstacle.move(); });
+    //this.obstacles.forEach(function (obstacle) { obstacle.move(); });
   }
 }
