@@ -17,4 +17,6 @@ Background.prototype.draw = function () {
   //Creación de puntos de apoyo para los personajes.
   this.game.ctx.fillStyle = "green";
   this.game.ctx.fillRect(this.x, this.game.canvas.height * 0.76, 250, 25);
+  this.game.ctx.fillRect(this.game.canvas.width / 2.3, this.game.canvas.height, 250, -350);
+
 }

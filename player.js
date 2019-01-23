@@ -6,6 +6,8 @@ function Player(game) {
 
   this.batman = new Image();
   this.batman.src = "images/batman-prueba.png";
+  this.batman.frames = 3;
+  this.batman.frameIndex = 0;
 
   this.w = 75;
   this.h = 100;
@@ -22,6 +24,17 @@ function Player(game) {
 
 Player.prototype.draw = function () {
   this.game.ctx.drawImage(this.batman, this.x, this.y, this.w, this.h);
+  // this.game.ctx.drawImage(
+  //   this.batman,
+  //   this.batman.frameIndex * Math.floor(this.batman.width / this.batman.frames),
+  //   0,
+  //   Math.floor(this.batman.width / this.batman.frames),
+  //   this.batman.height,
+  //   this.x,
+  //   this.y,
+  //   this.w,
+  //   this.h
+  // );
   this.move();
 }
 
@@ -45,24 +58,38 @@ Player.prototype.setListeners = function () {
 
 Player.prototype.move = function () {
 
-
   var gravity = 0.4;
 
-  if (this.y >= this.y0) {
+  var platformHeight = this.game.canvas.height * 0.76;
+  var platformWidth = 250;
+
+  if (this.y < this.y0 && this.y < platformHeight && this.x >= 0 && this.x <= platformWidth) {
+    this.y = platformHeight - 100;
     this.vy = 1;
-    this.y = this.y0;
+    this.y0 = platformHeight - 100;
   }
+
   else {
-    this.vy += gravity;
-    this.y += this.vy;
-  }
 
-  if (this.keys.left) {
-    this.x -= 10;
-  }
+    this.y0 = this.game.canvas.height * 0.8;
+    //this.y = this.y0;
 
-  if (this.keys.right) {
-    this.x += 10;
+    if (this.y >= this.y0) {
+      this.vy = 1;
+      this.y = this.y0;
+    }
+    else {
+      this.vy += gravity;
+      this.y += this.vy;
+    }
+
+    if (this.keys.left) {
+      this.x -= 10;
+    }
+
+    if (this.keys.right) {
+      this.x += 10;
+    }
   }
 }
 

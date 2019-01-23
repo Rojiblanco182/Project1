@@ -41,6 +41,7 @@ var Game = {
   reset: function () {
     this.background = new Background(this);
     this.player = new Player(this);
+    this.enemy = new Enemy(this);
     this.framesCounter = 0;
     this.obstacles = [];
     //this.score = 0;
@@ -63,11 +64,13 @@ var Game = {
   drawAll: function () {
     this.background.draw();
     this.player.draw();
+    this.enemy.draw();
     this.obstacles.forEach(function (obstacle) { obstacle.draw(); });
   },
 
   moveAll: function () {
     //this.player.move();
+    this.enemy.move();
     this.player.setListeners();
     this.obstacles.forEach(function (obstacle) { obstacle.move(); });
   }
