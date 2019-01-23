@@ -6,8 +6,8 @@ function Player(game) {
 
   this.batman = new Image();
   this.batman.src = "images/batman-prueba.png";
-  this.batman.frames = 3;
-  this.batman.frameIndex = 0;
+  //this.batman.frames = 3;
+  //this.batman.frameIndex = 0;
 
   this.w = 75;
   this.h = 100;
@@ -18,6 +18,8 @@ function Player(game) {
     left: false,
     right: false
   };
+
+  this.batarangs = [];
 
   this.setListeners();
 }
@@ -36,6 +38,18 @@ Player.prototype.draw = function () {
   //   this.h
   // );
   this.move();
+
+  this.batarangs = this.batarangs.filter(function (batarang) {
+    // if (batarang.x > 0 || batarang.x < this.game.canvas.width) {
+    //   return batarang.x;
+    return batarang.x > 0 || batarang.x < this.game.canvas.width;
+    //}
+  }.bind(this));
+
+  this.batarangs.forEach(function (batarang) {
+    batarang.draw();
+    batarang.move();
+  });
 }
 
 
@@ -43,6 +57,9 @@ Player.prototype.setListeners = function () {
 
   document.onkeydown = function (e) {
 
+    if (e.keyCode == 83) {
+      this.shoot(); //'S'
+    }
     if (e.keyCode == 38 && this.y == this.y0) this.y -= 600;
     if (e.keyCode == 37) this.keys.left = true;
     if (e.keyCode == 39) this.keys.right = true;
@@ -54,6 +71,12 @@ Player.prototype.setListeners = function () {
     if (e.keyCode == 37) this.keys.left = false;
     if (e.keyCode == 39) this.keys.right = false;
   }.bind(this);
+}
+
+Player.prototype.shoot = function () {
+  var batarang = new Batarang(this.game, this.x + this.w, this.y + this.h / 2);
+
+  this.batarangs.push(batarang);
 }
 
 Player.prototype.move = function () {
@@ -92,5 +115,3 @@ Player.prototype.move = function () {
     }
   }
 }
-
-

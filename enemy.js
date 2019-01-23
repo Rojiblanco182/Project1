@@ -10,7 +10,7 @@ function Enemy(game) {
   this.w = 75;
   this.h = 100;
 
-  this.vy = 1;
+  this.direction = 1;
 }
 
 Enemy.prototype.draw = function () {
@@ -20,17 +20,11 @@ Enemy.prototype.draw = function () {
 
 Enemy.prototype.move = function () {
 
-  // for (var xCounter = this.x0; xCounter >= this.x0 - 350; xCounter -= 2) {
-  //   this.x -= 2;
-  // }
   this.leftLimit = this.x0 - 350;
   this.rightLimit = this.x0;
+  this.x -= this.direction;
 
-  if (this.x >= this.leftLimit) {
-    this.x -= 2;
-  }
-
-  if (this.x == this.leftLimit && this.x < this.rightLimit) {
-    this.x += 2;
+  if (this.x < this.leftLimit || this.x > this.rightLimit) {
+    this.direction *= -1;
   }
 }
