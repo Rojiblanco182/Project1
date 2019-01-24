@@ -17,6 +17,9 @@ var Game = {
     this.canvas.height = window.innerHeight;
     this.fps = 60;
     this.countdown = 15;
+    this.mainTrack = new Audio("music/main-track.mp3");
+    this.mainTrack.play();
+    this.creditsTrack = new Audio("music/End Credits.mp3");
 
     this.countdownInterval = setInterval(function () {
       this.countdown--;
@@ -69,8 +72,10 @@ var Game = {
   },
 
   gameOver: function () {
+    this.mainTrack.stop();
     clearInterval(this.interval);
     clearInterval(this.countdownInterval);
+    this.creditsTrack.play();
 
     if (confirm("Game Over. Wanna play again?")) {
       this.reset();
@@ -79,8 +84,10 @@ var Game = {
   },
 
   gameCompleted: function () {
+    this.mainTrack.stop();
     clearInterval(this.interval);
     clearInterval(this.countdownInterval);
+    this.creditsTrack.play();
     if (confirm("Well done! Mission accomplished! Wanna play again?")) {
       this.reset();
       this.start();
