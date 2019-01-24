@@ -16,7 +16,7 @@ var Game = {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this.fps = 60;
-    this.countdown = 10;
+    this.countdown = 100000;
 
     this.countdownInterval = setInterval(function () {
       this.countdown--;
@@ -58,7 +58,7 @@ var Game = {
     this.background = new Background(this);
     this.player = new Player(this);
     this.enemies = [];
-    this.countdown = 10;
+    this.countdown = 100000;
     this.framesCounter = 0;
     this.clock = Clock;
     this.obstacles = [];

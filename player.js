@@ -87,13 +87,19 @@ Player.prototype.move = function () {
   var obstacle = this.game.checkCollision();
 
   if (obstacle) {
-    if (this.vy > 1) {
+    if (this.vy > 1 && (this.x + 10 + this.w > obstacle.x && this.x - 10 < obstacle.x + obstacle.w)) {
 
 
       this.y = obstacle.y - this.h;
       this.vy = 1;
       this.y0 = obstacle.y - this.h;
 
+    }
+    else if (this.x + 10 + this.w > obstacle.x && this.x + 10 < obstacle.x + obstacle.w) {
+      debugger
+      this.x -= 1;
+    } else if (this.x - 10 < obstacle.x + obstacle.w) {
+      this.x += 1;
     }
     else {
       this.vy = +1;
