@@ -8,6 +8,7 @@ var Game = {
   canvas: undefined,
   ctx: undefined,
   fps: 60,
+  clock: undefined,
 
   start: function (canvasId) {
     this.canvas = document.getElementById(canvasId);
@@ -15,11 +16,22 @@ var Game = {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this.fps = 60;
+    this.countdown = 10;
+
+    this.countdownInterval = setInterval(function () {
+      this.countdown--;
+    }.bind(this), 1000);
 
     this.reset();
 
+
     this.interval = setInterval(function () {
       this.clear();
+
+      if (this.countdown == 0) {
+        this.gameOver();
+      }
+
       this.framesCounter++;
       // this.generateObstacle();
 
@@ -27,15 +39,15 @@ var Game = {
         this.framesCounter = 0;
       }
 
-      if (this.framesCounter % 150 === 0) {
-        this.generateEnemy();
-      }
+      // if (this.framesCounter % 150 === 0) {
+      //   this.generateEnemy({ img: "images/batman-prueba.png", x0: this.canvas.width / 2.7, y: (this.canvas.height * 0.65) - 100 });
+      // }
 
       //this.score += 0.01;
       this.moveAll();
       this.drawAll();
 
-      //this.clearObstacles();
+      this.clearBullets();
       this.enemyKilled();
 
 
@@ -46,22 +58,39 @@ var Game = {
     this.background = new Background(this);
     this.player = new Player(this);
     this.enemies = [];
+    this.countdown = 10;
     this.framesCounter = 0;
+    this.clock = Clock;
     this.obstacles = [];
-    this.generateObstacle({ posX: 0, posY: this.canvas.height * 0.76, width: 200, height: 25 });
-    this.generateObstacle({ posX: this.canvas.width / 2.5, posY: 350, width: 250, height: 350 });
+    this.generateObstacle({ posX: 0, posY: this.canvas.height * 0.76, width: 150, height: 25 });
+    this.generateObstacle({ posX: this.canvas.width / 2.7, posY: this.canvas.height * 0.65, width: 250, height: 350 });
+    this.generateEnemy({ img: "images/joker.png", x0: this.canvas.width - 500, y: this.canvas.height * 0.8, width: 350 });
+    this.generateEnemy({ img: "images/batman-prueba.png", x0: this.canvas.width / 2.7, y: (this.canvas.height * 0.65) - 100, width: 250 });
+    this.generateEnemy({ img: "images/batman-prueba.png", x0: 225, y: this.canvas.height * 0.8, width: 220 });
+  },
+
+  gameOver: function () {
+    clearInterval(this.interval);
+    clearInterval(this.countdownInterval);
+
+    if (confirm("Game Over. Wanna play again?")) {
+      this.reset();
+      this.start();
+    }
   },
 
   enemyKilled: function () {
     this.enemies.forEach(function (enemy, i) {
-      this.player.batarangs.forEach(function (batarang) {
+      this.player.batarangs.forEach(function (batarang, j) {
 
         if (
           batarang.x <= enemy.x + enemy.w &&
-          batarang.x + batarang.w >= enemy.x
+          batarang.x + batarang.w >= enemy.x &&
+          batarang.y >= enemy.y &&
+          batarang.y <= enemy.h + enemy.y
         ) {
           this.enemies.splice(i, 1);
-          this.player.batarangs.splice(i, 1);
+          this.player.batarangs.splice(j, 1);
         }
       }.bind(this))
     }.bind(this))
@@ -100,14 +129,14 @@ var Game = {
     }
   },
 
-  // clearObstacles: function () {
-  //   this.obstacles = this.obstacles.filter(function (obstacle) {
-  //     return obstacle.x >= 0;
-  //   });
-  // },
+  clearBullets: function () {
+    this.player.batarangs = this.player.batarangs.filter(function (batarang) {
+      return batarang.x >= 0 && batarang.x <= this.canvas.width;
+    });
+  },
 
-  generateEnemy: function () {
-    this.enemies.push(new Enemy(this));
+  generateEnemy: function (obj) {
+    this.enemies.push(new Enemy(this, obj));
   },
 
   generateObstacle: function (obj) {
@@ -123,6 +152,7 @@ var Game = {
     this.player.draw();
     this.enemies.forEach(function (enemy) { enemy.draw(); });
     this.obstacles.forEach(function (obstacle) { obstacle.draw(); });
+    this.drawClock();
   },
 
   moveAll: function () {
@@ -130,5 +160,9 @@ var Game = {
     this.enemies.forEach(function (enemy) { enemy.move(); });
     this.player.setListeners();
     //this.obstacles.forEach(function (obstacle) { obstacle.move(); });
+  },
+
+  drawClock: function () {
+    this.clock.update(this.countdown, this.ctx)
   }
 }

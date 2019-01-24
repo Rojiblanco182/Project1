@@ -8,11 +8,15 @@ function Background(game) {
   this.x = 0;
   this.y = 0;
 
-  this.game.ctx.drawImage(this.backgroundImg, this.x, this.y, this.game.canvas.width, this.game.canvas.height);
+  this.batmobile = new Image();
+  this.batmobile.src = "images/batmobile.png";
+  this.batmobileW = 250;
+  this.batmobileH = 125;
 }
 
 Background.prototype.draw = function () {
   this.game.ctx.drawImage(this.backgroundImg, this.x, this.y, this.game.canvas.width, this.game.canvas.height);
+  this.game.ctx.drawImage(this.batmobile, this.game.canvas.width - 250, this.game.canvas.height * 0.8, this.batmobileW, this.batmobileH);
 
   //Creación de puntos de apoyo para los personajes.
   // this.game.ctx.fillStyle = "green";

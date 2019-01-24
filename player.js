@@ -5,9 +5,9 @@ function Player(game) {
   this.y = this.y0;
 
   this.batman = new Image();
-  this.batman.src = "images/batman-prueba.png";
-  //this.batman.frames = 3;
-  //this.batman.frameIndex = 0;
+  this.batman.src = "images/walking-batman.png";
+  this.batman.frames = 4;
+  this.batman.frameIndex = 0;
 
   this.w = 75;
   this.h = 100;
@@ -25,18 +25,19 @@ function Player(game) {
 }
 
 Player.prototype.draw = function () {
-  this.game.ctx.drawImage(this.batman, this.x, this.y, this.w, this.h);
-  // this.game.ctx.drawImage(
-  //   this.batman,
-  //   this.batman.frameIndex * Math.floor(this.batman.width / this.batman.frames),
-  //   0,
-  //   Math.floor(this.batman.width / this.batman.frames),
-  //   this.batman.height,
-  //   this.x,
-  //   this.y,
-  //   this.w,
-  //   this.h
-  // );
+  //this.game.ctx.drawImage(this.batman, this.x, this.y, this.w, this.h);
+  this.game.ctx.drawImage(
+    this.batman,
+    this.batman.frameIndex * Math.floor(this.batman.width / this.batman.frames),
+    0,
+    Math.floor(this.batman.width / this.batman.frames),
+    this.batman.height,
+    this.x,
+    this.y,
+    this.w,
+    this.h
+  );
+
   this.move();
 
   this.batarangs = this.batarangs.filter(function (batarang) {
@@ -83,10 +84,9 @@ Player.prototype.move = function () {
 
   var gravity = 0.4;
 
-  var platformHeight = this.game.canvas.height * 0.76;
   var obstacle = this.game.checkCollision();
+
   if (obstacle) {
-    // debugger;
     if (this.vy > 1) {
 
 
@@ -116,11 +116,20 @@ Player.prototype.move = function () {
     }
 
     if (this.keys.left) {
+      this.animateImg();
       this.x -= 10;
     }
 
     if (this.keys.right) {
+      this.animateImg();
       this.x += 10;
     }
   }
+}
+
+Player.prototype.animateImg = function () {
+
+  this.batman.frameIndex += 1;
+
+  if (this.batman.frameIndex > 3) this.batman.frameIndex = 0;
 }
