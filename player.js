@@ -58,10 +58,8 @@ Player.prototype.setListeners = function () {
 
   document.onkeydown = function (e) {
 
-    if (e.keyCode == 83) {
-      this.shoot(); //'S'
-    }
-    if (e.keyCode == 38 && this.y == this.y0) { this.y -= 5; this.vy -= 15 };
+    if (e.keyCode == 83) this.shoot(); //'S'
+    if (e.keyCode == 38 && this.y == this.y0) { this.y -= 5; this.vy -= 18 };
     if (e.keyCode == 37) this.keys.left = true;
     if (e.keyCode == 39) this.keys.right = true;
 

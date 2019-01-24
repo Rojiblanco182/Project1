@@ -16,7 +16,7 @@ var Game = {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this.fps = 60;
-    this.countdown = 100000;
+    this.countdown = 15;
 
     this.countdownInterval = setInterval(function () {
       this.countdown--;
@@ -28,16 +28,14 @@ var Game = {
     this.interval = setInterval(function () {
       this.clear();
 
-      if (this.countdown == 0) {
-        this.gameOver();
-      }
+      if (this.countdown == 0) this.gameOver();
+
+      if (this.player.x >= this.canvas.width - 250 && this.player.y >= this.canvas.height * 0.8) this.gameCompleted();
 
       this.framesCounter++;
       // this.generateObstacle();
 
-      if (this.framesCounter > 1000) {
-        this.framesCounter = 0;
-      }
+      if (this.framesCounter > 1000) this.framesCounter = 0;
 
       // if (this.framesCounter % 150 === 0) {
       //   this.generateEnemy({ img: "images/batman-prueba.png", x0: this.canvas.width / 2.7, y: (this.canvas.height * 0.65) - 100 });
@@ -49,6 +47,7 @@ var Game = {
 
       this.clearBullets();
       this.enemyKilled();
+      this.checkBulletsCollision();
 
 
     }.bind(this), 1000 / this.fps);
@@ -58,15 +57,15 @@ var Game = {
     this.background = new Background(this);
     this.player = new Player(this);
     this.enemies = [];
-    this.countdown = 100000;
+    this.countdown = 15;
     this.framesCounter = 0;
     this.clock = Clock;
     this.obstacles = [];
-    this.generateObstacle({ posX: 0, posY: this.canvas.height * 0.76, width: 150, height: 25 });
-    this.generateObstacle({ posX: this.canvas.width / 2.7, posY: this.canvas.height * 0.65, width: 250, height: 350 });
-    this.generateEnemy({ img: "images/joker.png", x0: this.canvas.width - 500, y: this.canvas.height * 0.8, width: 350 });
-    this.generateEnemy({ img: "images/batman-prueba.png", x0: this.canvas.width / 2.7, y: (this.canvas.height * 0.65) - 100, width: 250 });
-    this.generateEnemy({ img: "images/batman-prueba.png", x0: 225, y: this.canvas.height * 0.8, width: 220 });
+    this.generateObstacle({ img: "images/smile.jpg", posX: 13, posY: this.canvas.height * 0.76, width: 150, height: 25 });
+    this.generateObstacle({ img: "images/smile.jpg", posX: this.canvas.width / 2.7, posY: this.canvas.height * 0.65, width: 250, height: 350 });
+    this.generateEnemy({ img: "images/joker.png", frames: 2, x0: this.canvas.width - 700, y: this.canvas.height * 0.8, width: 450 });
+    this.generateEnemy({ img: "images/clown.png", frames: 4, x0: this.canvas.width / 2.7, y: (this.canvas.height * 0.65) - 80, width: 250 });
+    this.generateEnemy({ img: "images/clown.png", frames: 4, x0: 225, y: this.canvas.height * 0.8, width: 220 });
   },
 
   gameOver: function () {
@@ -74,6 +73,15 @@ var Game = {
     clearInterval(this.countdownInterval);
 
     if (confirm("Game Over. Wanna play again?")) {
+      this.reset();
+      this.start();
+    }
+  },
+
+  gameCompleted: function () {
+    clearInterval(this.interval);
+    clearInterval(this.countdownInterval);
+    if (confirm("Well done! Mission accomplished! Wanna play again?")) {
       this.reset();
       this.start();
     }
@@ -96,26 +104,24 @@ var Game = {
     }.bind(this))
   },
 
-  checkCollision: function () {
-    // this.left = function () { return this.x };
-    // this.right = function () { return (this.x + this.w) };
-    // this.top = function () { return this.y };
-    // this.bottom = function () { return (this.y + this.h) };
+  checkBulletsCollision: function () {
+    this.obstacles.forEach(function (obstacle) {
+      this.player.batarangs.forEach(function (batarang, j) {
 
-    // this.crashWith = function () {
-    //   return !((this.bottom() < obstacle.top()) ||
-    //     (this.left() > obstacle.right()) ||
-    //     (this.right() < obstacle.left()) ||
-    //     (this.top() > obstacle.bottom()))
-    // }
-    // return this.obstacles.some(function (obstacle) {
-    //   return (
-    //     ((this.player.x + this.player.w) >= obstacle.x &&
-    //       (obstacle.x + obstacle.w) > this.player.x &&
-    //       (this.player.y + this.player.h) > obstacle.y &&
-    //       (obstacle.y + obstacle.h) > this.player.y)
-    //   );
-    // }.bind(this));
+        if (
+          batarang.x <= obstacle.x + obstacle.w &&
+          batarang.x + batarang.w >= obstacle.x &&
+          batarang.y >= obstacle.y &&
+          batarang.y <= obstacle.h + obstacle.y
+        ) {
+          this.player.batarangs.splice(j, 1);
+        }
+      }.bind(this))
+    }.bind(this))
+  },
+
+  checkCollision: function () {
+
     var length = this.obstacles.length
     for (var i = 0; i < length; i++) {
       if (
@@ -156,7 +162,6 @@ var Game = {
   },
 
   moveAll: function () {
-    //this.player.move();
     this.enemies.forEach(function (enemy) { enemy.move(); });
     this.player.setListeners();
     //this.obstacles.forEach(function (obstacle) { obstacle.move(); });

@@ -1,5 +1,7 @@
 function Obstacle(game, obj) {
   this.game = game;
+  this.image = new Image();
+  this.image.src = obj.img;
 
   this.w = obj.width;
   this.h = obj.height;
@@ -11,9 +13,10 @@ function Obstacle(game, obj) {
 }
 
 Obstacle.prototype.draw = function () {
-  this.game.ctx.fillStyle = "green";
-  this.game.ctx.fillRect(this.x, this.y, this.w, this.h);
-  // this.game.ctx.fillRect(this.game.canvas.width / 2.3, this.game.canvas.height, 250, -350);
+  // this.game.ctx.fillStyle = "green";
+  // this.game.ctx.fillRect(this.x, this.y, this.w, this.h);
+
+  this.game.ctx.drawImage(this.image, this.x, this.y, this.w, this.h);
 }
 
 // Obstacle.prototype.draw = function () {

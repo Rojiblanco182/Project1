@@ -3,7 +3,7 @@ function Enemy(game, obj) {
 
   this.enemy = new Image();
   this.enemy.src = obj.img;
-  this.enemy.frames = 4;
+  this.enemy.frames = obj.frames;
   this.enemy.frameIndex = 0;
 
   this.x0 = obj.x0;
@@ -13,6 +13,9 @@ function Enemy(game, obj) {
 
   this.w = 75;
   this.h = 100;
+
+  this.dw = 100;
+  this.dh = 150;
 
   this.direction = 1;
 }
@@ -26,8 +29,8 @@ Enemy.prototype.draw = function () {
     this.h,
     this.x,
     this.y,
-    this.w,
-    this.h
+    this.dw,
+    this.dh
   );
   this.animateImg();
   this.move();
@@ -46,7 +49,7 @@ Enemy.prototype.move = function () {
 
 Enemy.prototype.animateImg = function () {
 
-  if (this.game.framesCounter % 8 === 0) {
+  if (this.game.framesCounter % 15 === 0) {
 
     this.enemy.frameIndex += 1;
 
