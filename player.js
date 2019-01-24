@@ -60,7 +60,7 @@ Player.prototype.setListeners = function () {
     if (e.keyCode == 83) {
       this.shoot(); //'S'
     }
-    if (e.keyCode == 38 && this.y == this.y0) this.y -= 600;
+    if (e.keyCode == 38 && this.y == this.y0) { this.y -= 5; this.vy -= 15 };
     if (e.keyCode == 37) this.keys.left = true;
     if (e.keyCode == 39) this.keys.right = true;
 
@@ -84,12 +84,21 @@ Player.prototype.move = function () {
   var gravity = 0.4;
 
   var platformHeight = this.game.canvas.height * 0.76;
-  var platformWidth = 250;
+  var obstacle = this.game.checkCollision();
+  if (obstacle) {
+    // debugger;
+    if (this.vy > 1) {
 
-  if (this.y < this.y0 && this.y < platformHeight && this.x >= 0 && this.x <= platformWidth) {
-    this.y = platformHeight - 100;
-    this.vy = 1;
-    this.y0 = platformHeight - 100;
+
+      this.y = obstacle.y - this.h;
+      this.vy = 1;
+      this.y0 = obstacle.y - this.h;
+
+    }
+    else {
+      this.vy = +1;
+      this.y += this.vy;
+    }
   }
 
   else {

@@ -21,7 +21,7 @@ var Game = {
     this.interval = setInterval(function () {
       this.clear();
       this.framesCounter++;
-      this.generateObstacle();
+      // this.generateObstacle();
 
       if (this.framesCounter > 1000) {
         this.framesCounter = 0;
@@ -38,6 +38,7 @@ var Game = {
       //this.clearObstacles();
       this.enemyKilled();
 
+
     }.bind(this), 1000 / this.fps);
   },
 
@@ -47,7 +48,8 @@ var Game = {
     this.enemies = [];
     this.framesCounter = 0;
     this.obstacles = [];
-    //this.score = 0;
+    this.generateObstacle({ posX: 0, posY: this.canvas.height * 0.76, width: 200, height: 25 });
+    this.generateObstacle({ posX: this.canvas.width / 2.5, posY: 350, width: 250, height: 350 });
   },
 
   enemyKilled: function () {
@@ -59,6 +61,7 @@ var Game = {
           batarang.x + batarang.w >= enemy.x
         ) {
           this.enemies.splice(i, 1);
+          this.player.batarangs.splice(i, 1);
         }
       }.bind(this))
     }.bind(this))
@@ -76,14 +79,25 @@ var Game = {
     //     (this.right() < obstacle.left()) ||
     //     (this.top() > obstacle.bottom()))
     // }
-    return this.obstacles.some(function (obstacle) {
-      return (
-        ((this.player.x + this.player.w) >= obstacle.x &&
-          (obstacle.x + obstacle.w) > this.player.x &&
-          (this.player.y + this.player.h) > obstacle.y &&
-          (obstacle.y + obstacle.h) > this.player.y)
-      );
-    }.bind(this));
+    // return this.obstacles.some(function (obstacle) {
+    //   return (
+    //     ((this.player.x + this.player.w) >= obstacle.x &&
+    //       (obstacle.x + obstacle.w) > this.player.x &&
+    //       (this.player.y + this.player.h) > obstacle.y &&
+    //       (obstacle.y + obstacle.h) > this.player.y)
+    //   );
+    // }.bind(this));
+    var length = this.obstacles.length
+    for (var i = 0; i < length; i++) {
+      if (
+        ((this.player.x + this.player.w) >= this.obstacles[i].x &&
+          (this.obstacles[i].x + this.obstacles[i].w) > this.player.x &&
+          (this.player.y + this.player.h) > this.obstacles[i].y &&
+          (this.obstacles[i].y + this.obstacles[i].h) > this.player.y)
+      ) {
+        return this.obstacles[i];
+      }
+    }
   },
 
   // clearObstacles: function () {
@@ -96,8 +110,8 @@ var Game = {
     this.enemies.push(new Enemy(this));
   },
 
-  generateObstacle: function () {
-    this.obstacles.push(new Obstacle(this));
+  generateObstacle: function (obj) {
+    this.obstacles.push(new Obstacle(this, obj));
   },
 
   clear: function () {
