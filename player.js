@@ -108,7 +108,6 @@ Player.prototype.move = function () {
   else {
 
     this.y0 = this.game.canvas.height * 0.8;
-    //this.y = this.y0;
 
     if (this.y >= this.y0) {
       this.vy = 1;

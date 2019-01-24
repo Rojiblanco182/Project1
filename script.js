@@ -36,7 +36,6 @@ var Game = {
       if (this.player.x >= this.canvas.width - 250 && this.player.y >= this.canvas.height * 0.8) this.gameCompleted();
 
       this.framesCounter++;
-      // this.generateObstacle();
 
       if (this.framesCounter > 1000) this.framesCounter = 0;
 
@@ -66,9 +65,9 @@ var Game = {
     this.obstacles = [];
     this.generateObstacle({ img: "images/smile.jpg", posX: 13, posY: this.canvas.height * 0.76, width: 150, height: 25 });
     this.generateObstacle({ img: "images/smile.jpg", posX: this.canvas.width / 2.7, posY: this.canvas.height * 0.65, width: 250, height: 350 });
-    this.generateEnemy({ img: "images/joker.png", frames: 2, x0: this.canvas.width - 700, y: this.canvas.height * 0.8, width: 450 });
+    this.generateEnemy({ img: "images/joker.png", frames: 2, x0: this.canvas.width / 2, y: this.canvas.height * 0.8, width: 650 });
     this.generateEnemy({ img: "images/clown.png", frames: 4, x0: this.canvas.width / 2.7, y: (this.canvas.height * 0.65) - 80, width: 250 });
-    this.generateEnemy({ img: "images/clown.png", frames: 4, x0: 225, y: this.canvas.height * 0.8, width: 220 });
+    this.generateEnemy({ img: "images/walking-enemy.png", frames: 3, x0: 200, y: this.canvas.height * 0.8, width: 400 });
   },
 
   gameOver: function () {
