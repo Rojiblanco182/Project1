@@ -94,7 +94,6 @@ Player.prototype.move = function () {
 
     }
     else if (this.x + 10 + this.w > obstacle.x && this.x + 10 < obstacle.x + obstacle.w) {
-      debugger
       this.x -= 1;
     } else if (this.x - 10 < obstacle.x + obstacle.w) {
       this.x += 1;

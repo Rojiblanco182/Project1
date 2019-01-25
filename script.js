@@ -1,6 +1,19 @@
 window.onload = function () {
+  // var canvas = document.getElementById("canvas");
+  // var ctx = canvas.getContext("2d");
+  // canvas.width = window.innerWidth;
+  // canvas.height = window.innerHeight;
+  // var introBg = new Image();
+  // introBg.src = "images/intro-back.jpg";
+  // ctx.drawImage(introBg, 0, 0, canvas.width, canvas.height);
+
+  // Game.intro("canvas");
+
+  Game.start("canvas");
+
   document.getElementById("start-button").onclick = function () {
-    Game.start("canvas");
+    Game.startGame = true;
+    Game.mainTrack.play();
   };
 }
 
@@ -9,8 +22,25 @@ var Game = {
   ctx: undefined,
   fps: 60,
   clock: undefined,
+  startGame: false,
+
+  // intro: function (canvasId) {
+  //   this.canvas = document.getElementById(canvasId);
+  //   this.ctx = this.canvas.getContext("2d");
+  //   this.canvas.width = window.innerWidth;
+  //   this.canvas.height = window.innerHeight;
+  //   this.background = new Background(this);
+
+  //   this.introInterval = setInterval(function () {
+  //     this.background.draw();
+  //   }.bind(this), 1000);
+
+  // },
 
   start: function (canvasId) {
+
+
+
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext("2d");
     this.canvas.width = window.innerWidth;
@@ -18,12 +48,13 @@ var Game = {
     this.fps = 60;
     this.countdown = 15;
     this.mainTrack = new Audio("music/main-track.mp3");
-    this.mainTrack.play();
     this.creditsTrack = new Audio("music/End Credits.mp3");
+    // this.introBg = new Image();
+    // this.introBg.src = "images/intro-back.jpg";
 
-    this.countdownInterval = setInterval(function () {
-      this.countdown--;
-    }.bind(this), 1000);
+    // this.countdownInterval = setInterval(function () {
+    //   this.countdown--;
+    // }.bind(this), 1000);
 
     this.reset();
 
@@ -31,38 +62,53 @@ var Game = {
     this.interval = setInterval(function () {
       this.clear();
 
-      if (this.countdown == 0) this.gameOver();
+      if (!this.startGame) {
 
-      if (this.player.x >= this.canvas.width - 250 && this.player.y >= this.canvas.height * 0.8) this.gameCompleted();
+        //this.introBg = { img: "intro-back.png", x: 0, y: 0, w: this.canvas.width, h: this.canvas.height };
+        this.introBg = new Background(this, { img: "images/intro-back.jpg", x: 0, y: 0, w: this.canvas.width, h: this.canvas.height });
+        this.introBg.draw();
+      }
 
-      this.framesCounter++;
+      else {
 
-      if (this.framesCounter > 1000) this.framesCounter = 0;
+        if (this.countdown == 0) this.gameOver();
 
-      // if (this.framesCounter % 150 === 0) {
-      //   this.generateEnemy({ img: "images/batman-prueba.png", x0: this.canvas.width / 2.7, y: (this.canvas.height * 0.65) - 100 });
-      // }
+        if (this.player.x >= this.canvas.width - 250 && this.player.y >= this.canvas.height * 0.8) this.gameCompleted();
 
-      //this.score += 0.01;
-      this.moveAll();
-      this.drawAll();
+        this.framesCounter++;
 
-      this.clearBullets();
-      this.enemyKilled();
-      this.checkBulletsCollision();
+        if (this.framesCounter > 1000) this.framesCounter = 0
 
+
+        if (this.framesCounter % this.fps === 0) this.countdown--;
+
+        // if (this.framesCounter % 150 === 0) {
+        //   this.generateEnemy({ img: "images/batman-prueba.png", x0: this.canvas.width / 2.7, y: (this.canvas.height * 0.65) - 100 });
+        // }
+
+        //this.score += 0.01;
+        this.moveAll();
+        this.drawAll();
+
+        this.clearBullets();
+        this.enemyKilled();
+        this.checkBulletsCollision();
+      }
 
     }.bind(this), 1000 / this.fps);
   },
 
   reset: function () {
-    this.background = new Background(this);
+    //this.background = new Background(this);
+    this.backgrounds = [];
     this.player = new Player(this);
     this.enemies = [];
     this.countdown = 15;
     this.framesCounter = 0;
     this.clock = Clock;
     this.obstacles = [];
+    this.generateBg({ img: "images/back2.png", x: 0, y: 0, w: this.canvas.width, h: this.canvas.height });
+    this.generateBg({ img: "images/batmobile.png", x: this.canvas.width - 250, y: this.canvas.height * 0.82, w: 250, h: 125 });
     this.generateObstacle({ img: "images/smile.jpg", posX: 13, posY: this.canvas.height * 0.76, width: 150, height: 25 });
     this.generateObstacle({ img: "images/smile.jpg", posX: this.canvas.width / 2.7, posY: this.canvas.height * 0.65, width: 250, height: 350 });
     this.generateEnemy({ img: "images/joker.png", frames: 2, x0: this.canvas.width / 2, y: this.canvas.height * 0.8, width: 650 });
@@ -73,7 +119,7 @@ var Game = {
   gameOver: function () {
     this.mainTrack.stop();
     clearInterval(this.interval);
-    clearInterval(this.countdownInterval);
+    //clearInterval(this.countdownInterval);
     this.creditsTrack.play();
 
     if (confirm("Game Over. Wanna play again?")) {
@@ -85,7 +131,9 @@ var Game = {
   gameCompleted: function () {
     this.mainTrack.stop();
     clearInterval(this.interval);
-    clearInterval(this.countdownInterval);
+    //clearInterval(this.countdownInterval);
+    this.introBg = new Background(this, { img: "images/intro-back.jpg", x: 0, y: 0, w: this.canvas.width, h: this.canvas.height });
+    this.introBg.draw();
     this.creditsTrack.play();
     if (confirm("Well done! Mission accomplished! Wanna play again?")) {
       this.reset();
@@ -147,6 +195,10 @@ var Game = {
     });
   },
 
+  generateBg: function (obj) {
+    this.backgrounds.push(new Background(this, obj));
+  },
+
   generateEnemy: function (obj) {
     this.enemies.push(new Enemy(this, obj));
   },
@@ -160,11 +212,12 @@ var Game = {
   },
 
   drawAll: function () {
-    this.background.draw();
-    this.player.draw();
-    this.enemies.forEach(function (enemy) { enemy.draw(); });
+    //this.background.draw();
+    this.backgrounds.forEach(function (background) { background.draw(); });
     this.obstacles.forEach(function (obstacle) { obstacle.draw(); });
     this.drawClock();
+    this.player.draw();
+    this.enemies.forEach(function (enemy) { enemy.draw(); });
   },
 
   moveAll: function () {
