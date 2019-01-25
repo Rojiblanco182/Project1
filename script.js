@@ -66,8 +66,8 @@ var Game = {
     this.generateObstacle({ img: "images/smile.jpg", posX: 13, posY: this.canvas.height * 0.76, width: 150, height: 25 });
     this.generateObstacle({ img: "images/smile.jpg", posX: this.canvas.width / 2.7, posY: this.canvas.height * 0.65, width: 250, height: 350 });
     this.generateEnemy({ img: "images/joker.png", frames: 2, x0: this.canvas.width / 2, y: this.canvas.height * 0.8, width: 650 });
-    this.generateEnemy({ img: "images/clown.png", frames: 4, x0: this.canvas.width / 2.7, y: (this.canvas.height * 0.65) - 80, width: 250 });
-    this.generateEnemy({ img: "images/walking-enemy.png", frames: 3, x0: 200, y: this.canvas.height * 0.8, width: 400 });
+    this.generateEnemy({ img: "images/soldier.png", frames: 10, x0: this.canvas.width / 2.7, y: (this.canvas.height * 0.63) - 80, width: 250 });
+    this.generateEnemy({ img: "images/soldier.png", frames: 10, x0: 200, y: this.canvas.height * 0.8, width: 400 });
   },
 
   gameOver: function () {
@@ -98,10 +98,10 @@ var Game = {
       this.player.batarangs.forEach(function (batarang, j) {
 
         if (
-          batarang.x <= enemy.x + enemy.w &&
+          batarang.x <= enemy.x + enemy.dw &&
           batarang.x + batarang.w >= enemy.x &&
           batarang.y >= enemy.y &&
-          batarang.y <= enemy.h + enemy.y
+          batarang.y <= enemy.dh + enemy.y
         ) {
           this.enemies.splice(i, 1);
           this.player.batarangs.splice(j, 1);

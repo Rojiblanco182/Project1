@@ -11,22 +11,19 @@ function Enemy(game, obj) {
   this.y = obj.y;
   this.objectWidth = obj.width;
 
-  this.w = 75;
-  this.h = 100;
+  this.dw = 75;
+  this.dh = 100;
 
-  this.dw = 100;
-  this.dh = 150;
-
-  this.direction = 1;
+  this.direction = 1; //880 x 52
 }
 
 Enemy.prototype.draw = function () {
   this.game.ctx.drawImage(
     this.enemy,
-    this.enemy.frameIndex * Math.floor(this.w / this.enemy.frames),
+    this.enemy.frameIndex * Math.floor(this.enemy.width / this.enemy.frames),
     0,
-    Math.floor(this.w / this.enemy.frames),
-    this.h,
+    Math.floor(this.enemy.width / this.enemy.frames),
+    this.enemy.height,
     this.x,
     this.y,
     this.dw,
@@ -39,7 +36,7 @@ Enemy.prototype.draw = function () {
 Enemy.prototype.move = function () {
 
   this.leftLimit = this.x0;
-  this.rightLimit = this.x0 + (this.objectWidth - this.w);
+  this.rightLimit = this.x0 + (this.objectWidth - this.dw);
   this.x -= this.direction;
 
   if (this.x < this.leftLimit || this.x > this.rightLimit) {
@@ -49,7 +46,7 @@ Enemy.prototype.move = function () {
 
 Enemy.prototype.animateImg = function () {
 
-  if (this.game.framesCounter % 15 === 0) {
+  if (this.game.framesCounter % 20 === 0) {
 
     this.enemy.frameIndex += 1;
 
