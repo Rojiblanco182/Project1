@@ -1,19 +1,10 @@
 window.onload = function () {
-  // var canvas = document.getElementById("canvas");
-  // var ctx = canvas.getContext("2d");
-  // canvas.width = window.innerWidth;
-  // canvas.height = window.innerHeight;
-  // var introBg = new Image();
-  // introBg.src = "images/intro-back.jpg";
-  // ctx.drawImage(introBg, 0, 0, canvas.width, canvas.height);
-
-  // Game.intro("canvas");
 
   Game.start("canvas");
 
   document.getElementById("start-button").onclick = function () {
     Game.startGame = true;
-    Game.mainTrack.play();
+    //Game.mainTrack.play();
   };
 }
 
@@ -23,19 +14,6 @@ var Game = {
   fps: 60,
   clock: undefined,
   startGame: false,
-
-  // intro: function (canvasId) {
-  //   this.canvas = document.getElementById(canvasId);
-  //   this.ctx = this.canvas.getContext("2d");
-  //   this.canvas.width = window.innerWidth;
-  //   this.canvas.height = window.innerHeight;
-  //   this.background = new Background(this);
-
-  //   this.introInterval = setInterval(function () {
-  //     this.background.draw();
-  //   }.bind(this), 1000);
-
-  // },
 
   start: function (canvasId) {
 
@@ -49,12 +27,6 @@ var Game = {
     this.countdown = 15;
     this.mainTrack = new Audio("music/main-track.mp3");
     this.creditsTrack = new Audio("music/End Credits.mp3");
-    // this.introBg = new Image();
-    // this.introBg.src = "images/intro-back.jpg";
-
-    // this.countdownInterval = setInterval(function () {
-    //   this.countdown--;
-    // }.bind(this), 1000);
 
     this.reset();
 
@@ -70,6 +42,8 @@ var Game = {
       }
 
       else {
+
+        this.mainTrack.play();
 
         if (this.countdown == 0) this.gameOver();
 
@@ -129,6 +103,7 @@ var Game = {
   },
 
   gameCompleted: function () {
+    //this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.mainTrack.stop();
     clearInterval(this.interval);
     //clearInterval(this.countdownInterval);
